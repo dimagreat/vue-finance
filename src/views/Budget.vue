@@ -11,20 +11,14 @@
       </el-col>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-button type="primary" v-on:click=calcSavings>Calculate savings</el-button>
-    </el-row>
-    <el-row type="flex" justify="center">
       <el-col :span="8">
-        <span>Per year income: </span>
-        <span>{{ totalIncome }}</span>
+        <label-value label="Per year income" v-bind:value="totalIncome"></label-value>
       </el-col>
       <el-col :span="8">
-        <span>Per month savings: </span>
-        <span>{{ monthSavings }}</span>
+        <label-value label="Per month savings" v-bind:value="monthSavings"></label-value>
       </el-col>
       <el-col :span="8">
-        <span>Per year savings: </span>
-        <span>{{ totalSavings }}</span>
+        <label-value label="Per year savings" v-bind:value="totalSavings"></label-value>
       </el-col>
     </el-row>
   </el-container>
@@ -32,34 +26,34 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import LabelValue from '../components/LabelValue.vue';
 
 export default Vue.extend({
-  name: 'Budget',
+  components: { LabelValue },
   data() {
     return {
       income: 50000,
-      savings: 0,
-      totalSavings: 0,
-      totalIncome: 0,
-      monthSavings: 0,
+      savings: 15,
     };
   },
-  methods: {
-    calcSavings() {
-      const savingsPercent = this.savings / 100;
-      this.totalIncome = this.income * 12;
-      this.monthSavings = this.income * savingsPercent;
-      this.totalSavings = this.totalIncome * savingsPercent;
-
+  computed: {
+    totalIncome(): number {
+      return this.income * 12;
+    },
+    monthSavings(): number {
+      return this.income * (this.savings / 100);
+    },
+    totalSavings(): number {
+      return this.totalIncome * (this.savings / 100);
     },
   },
 });
 </script>
 <style>
 .el-row {
-    margin-bottom: 30px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+  margin-bottom: 30px;
+}
+.el-row:last-child {
+  margin-bottom: 0;
+}
 </style>
