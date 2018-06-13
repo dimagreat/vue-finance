@@ -1,24 +1,40 @@
 <template>
   <el-container direction="vertical">
-    <el-row type="flex" justify="center">
-      <el-col :span="12">
-        <p>Enter month income</p>
-        <el-input-number v-model="income" :controls=false></el-input-number>
+    <h1> Budget Planning </h1>
+    <el-row  type="flex" align="center">
+      <el-col :span="6" :offset="6">
+        <el-row>
+          <el-col :span="12">
+            <p>Enter month income:</p>
+          </el-col>
+          <el-col :span="4">
+            <el-input-number v-model="income" :controls=false></el-input-number>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <p>Enter per month saving (%):</p>
+          </el-col>
+          <el-col :span="4">
+            <el-input-number v-model="savings" :controls=false :max=100 :min=0></el-input-number>
+          </el-col>
+        </el-row>
       </el-col>
-      <el-col :span="12">
-        <p>Enter month saving percent</p>
-        <el-input-number v-model="savings" :controls=false :max=100 :min=0></el-input-number>
+      <el-col :span="5">
+        <el-row :span="8">
+          <label-value label="Per year income" v-bind:value="totalIncome"></label-value>
+        </el-row>
+        <el-row :span="8">
+          <label-value label="Per month savings" v-bind:value="monthSavings"></label-value>
+        </el-row>
+        <el-row :span="8">
+          <label-value label="Per year savings" v-bind:value="totalSavings"></label-value>
+        </el-row>
       </el-col>
     </el-row>
-    <el-row type="flex" justify="center">
-      <el-col :span="8">
-        <label-value label="Per year income" v-bind:value="totalIncome"></label-value>
-      </el-col>
-      <el-col :span="8">
-        <label-value label="Per month savings" v-bind:value="monthSavings"></label-value>
-      </el-col>
-      <el-col :span="8">
-        <label-value label="Per year savings" v-bind:value="totalSavings"></label-value>
+    <el-row>
+      <el-col :span="8" :offset="8">
+        <el-button round @click="save">Save</el-button>
       </el-col>
     </el-row>
   </el-container>
@@ -27,14 +43,22 @@
 <script lang="ts">
 import Vue from 'vue';
 import LabelValue from '../components/LabelValue.vue';
+import BudgetApi from '../api';
 
 export default Vue.extend({
   components: { LabelValue },
   data() {
     return {
-      income: 50000,
-      savings: 15,
+      income: 0,
+      savings: 0
     };
+  },
+  mounted() {
+    const data = BudgetApi.getBudgetSettings();
+    if (data) {
+      this.income = data.income;
+      this.savings = data.savings;
+    }
   },
   computed: {
     totalIncome(): number {
@@ -45,8 +69,13 @@ export default Vue.extend({
     },
     totalSavings(): number {
       return this.totalIncome * (this.savings / 100);
-    },
+    }
   },
+  methods: {
+    save() {
+      BudgetApi.setBudgetSettings({ income: this.income, savings: this.savings });
+    }
+  }
 });
 </script>
 <style>
