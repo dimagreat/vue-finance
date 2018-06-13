@@ -1,88 +1,60 @@
 <template>
   <el-container direction="vertical">
-    <h1> Budget Planning </h1>
-    <el-row  type="flex" align="center">
-      <el-col :span="6" :offset="6">
-        <el-row>
-          <el-col :span="12">
-            <p>Enter month income:</p>
-          </el-col>
-          <el-col :span="4">
-            <el-input-number v-model="income" :controls=false></el-input-number>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <p>Enter per month saving (%):</p>
-          </el-col>
-          <el-col :span="4">
-            <el-input-number v-model="savings" :controls=false :max=100 :min=0></el-input-number>
-          </el-col>
-        </el-row>
-      </el-col>
-      <el-col :span="5">
-        <el-row :span="8">
-          <label-value label="Per year income" v-bind:value="totalIncome"></label-value>
-        </el-row>
-        <el-row :span="8">
-          <label-value label="Per month savings" v-bind:value="monthSavings"></label-value>
-        </el-row>
-        <el-row :span="8">
-          <label-value label="Per year savings" v-bind:value="totalSavings"></label-value>
-        </el-row>
+    <h1>Budget Planning</h1>
+    <budget-stats></budget-stats>
+    <h2>Targets</h2>
+    <el-row :gutter="50">
+      <el-col :span="4" :key="key" v-for="(target, key) in targets">
+        <target :name="target.name" :price="target.price" :saved="target.saved"></target>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="8" :offset="8">
-        <el-button round @click="save">Save</el-button>
+      <el-col :span="4" :offset="8">
+        <el-button round @click="openCreateTargetDlg">Add Target</el-button>
+      </el-col>
+      <el-col :span="4">
+        <el-button round @click="saveTargets">Save Targets</el-button>
       </el-col>
     </el-row>
+    <create-target-dlg v-bind:is-open="isCreateTargetDlgOpen" :on-add="createTarget" :on-close="closeCreateTargetDlg"></create-target-dlg>
   </el-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import LabelValue from '../components/LabelValue.vue';
-import BudgetApi from '../api';
+import BudgetStats from '../components/BudgetStats.vue';
+import Target from '../components/Target.vue';
+import CreateTargetDlg from '../components/CreateTargetDlg.vue';
+
+import BudgetApi, { ITarget } from '../api';
 
 export default Vue.extend({
-  components: { LabelValue },
+  components: { BudgetStats, Target, CreateTargetDlg },
   data() {
     return {
-      income: 0,
-      savings: 0
+      targets: [] as ITarget[],
+      isCreateTargetDlgOpen: false
     };
   },
   mounted() {
-    const data = BudgetApi.getBudgetSettings();
+    const data = BudgetApi.getTargets();
     if (data) {
-      this.income = data.income;
-      this.savings = data.savings;
-    }
-  },
-  computed: {
-    totalIncome(): number {
-      return this.income * 12;
-    },
-    monthSavings(): number {
-      return this.income * (this.savings / 100);
-    },
-    totalSavings(): number {
-      return this.totalIncome * (this.savings / 100);
+      this.targets = data;
     }
   },
   methods: {
-    save() {
-      BudgetApi.setBudgetSettings({ income: this.income, savings: this.savings });
+    openCreateTargetDlg() {
+      this.isCreateTargetDlgOpen = true;
+    },
+    closeCreateTargetDlg() {
+      this.isCreateTargetDlgOpen = false;
+    },
+    createTarget(target: ITarget) {
+      this.targets.push(target);
+    },
+    saveTargets() {
+      BudgetApi.setTargets(this.targets);
     }
   }
 });
 </script>
-<style>
-.el-row {
-  margin-bottom: 30px;
-}
-.el-row:last-child {
-  margin-bottom: 0;
-}
-</style>

@@ -3,18 +3,41 @@ export interface IBudgetSettings {
   income: number;
 }
 
-const BUDGET = 'budget';
+export interface ITarget {
+  name: string;
+  price: number;
+  saved: number;
+}
+
+const BUDGET_SETTINGS = 'BUDGET_SETTINGS';
+const TARGETS = 'TARGETS';
 
 class BudgetApi {
   private storage = window.localStorage;
 
   public getBudgetSettings(): IBudgetSettings {
-    const data = this.storage.getItem(BUDGET);
-    return data && JSON.parse(data);
+    return this.getData(BUDGET_SETTINGS);
   }
 
   public setBudgetSettings(budget: IBudgetSettings) {
-    this.storage.setItem(BUDGET, JSON.stringify(budget));
+    this.setData(BUDGET_SETTINGS, budget);
+  }
+
+  public getTargets() {
+    return this.getData(TARGETS);
+  }
+
+  public setTargets(targets: ITarget[]) {
+    return this.setData(TARGETS, targets);
+  }
+
+  private setData(key: string, data: any) {
+    this.storage.setItem(key, JSON.stringify(data));
+  }
+
+  private getData(key: string) {
+    const data = this.storage.getItem(key);
+    return data && JSON.parse(data);
   }
 }
 
