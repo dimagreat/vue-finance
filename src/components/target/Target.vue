@@ -1,7 +1,7 @@
 <template>
-  <div class="target" @click="onAddSaved">
+  <div class="target" @click="openTargetBalance(index)">
     <div class="target-name">{{ name }}</div>
-    <div class="target-progress">{{ saved }}/{{ price }}</div>
+    <div class="target-progress">{{ balance }}/{{ price }}</div>
     <div class="target-complete" :style="{ width: complete + '%' }"></div>
   </div>
 </template>
@@ -20,22 +20,31 @@ export default Vue.extend({
       type: Number,
       required: true
     },
-    saved: {
+    balance: {
       type: Number,
       required: true
     },
-    onAddSaved: {
+    index: {
+      type: Number,
+      required: true
+    },
+    openTargetBalance: {
       type: Function,
       required: true
     }
   },
+  data() {
+    return {
+    };
+  },
   computed: {
     complete(): number {
-      return 100 / (this.price / this.saved);
+      return 100 / (this.price / this.balance);
     }
-  }
+  },
 });
 </script>
+
 <style>
 .target {
   border: 1px solid #ccc;
@@ -43,6 +52,7 @@ export default Vue.extend({
   padding: 10px;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 .target-name {
   font-style: italic;
@@ -56,5 +66,3 @@ export default Vue.extend({
   height: 100%;
 }
 </style>
-
-

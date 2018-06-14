@@ -6,7 +6,7 @@ export interface IBudgetSettings {
 export interface ITarget {
   name: string;
   price: number;
-  saved: number;
+  balance: number;
 }
 
 const BUDGET_SETTINGS = 'BUDGET_SETTINGS';

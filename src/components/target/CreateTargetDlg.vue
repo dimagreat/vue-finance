@@ -45,16 +45,18 @@ export default Vue.extend({
       required: true
     }
   },
-  data: {
-    name: '',
-    price: 0
+  data() {
+    return {
+      name: '',
+      price: 0
+    };
   },
   methods: {
     onAddTarget() {
       this.onAdd({
         name: this.name,
         price: this.price,
-        saved: 0
+        balance: 0
       });
       this.onClose();
     }

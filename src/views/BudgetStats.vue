@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import LabelValue from './LabelValue.vue';
+import LabelValue from '../components/LabelValue.vue';
 import BudgetApi from '../api';
 
 export default Vue.extend({
