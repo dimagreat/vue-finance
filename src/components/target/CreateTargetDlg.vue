@@ -3,7 +3,7 @@
     title="Create Target"
     :visible="isOpen"
     width="30%">
-    <el-row>
+    <el-row type="flex" align="middle">
       <el-col :span="12">
         <p>Enter target name:</p>
       </el-col>
@@ -11,7 +11,7 @@
         <el-input v-model="name"></el-input>
       </el-col>
     </el-row>
-        <el-row>
+    <el-row  type="flex" align="middle">
       <el-col :span="12">
         <p>Enter target price:</p>
       </el-col>

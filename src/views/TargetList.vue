@@ -1,18 +1,18 @@
 <template>
   <div>
     <h2>Targets</h2>
-    <el-row :gutter="50">
-      <div v-if="targets.length === 0">There is no targets</div>
-      <el-col :span="4" :offset="1" :key="key" v-for="(target, key) in targets">
-        <target :open-target-balance="onOpenTargetBalanceDlg" :index="key" :name="target.name" :price="target.price" :balance="target.balance"></target>
+    <el-row>
+      <el-col :span="4" :offset="8">
+        <el-button type="primary" round @click="isCreateTargetDlgOpen = true">Add Target</el-button>
+      </el-col>
+      <el-col :span="4">
+        <el-button type="primary" round @click="saveTargets">Save Targets</el-button>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="4" :offset="8">
-        <el-button round @click="isCreateTargetDlgOpen = true">Add Target</el-button>
-      </el-col>
-      <el-col :span="4">
-        <el-button round @click="saveTargets">Save Targets</el-button>
+      <div v-if="targets.length === 0">There is no targets</div>
+      <el-col :span="4" :offset="1" :key="key" v-for="(target, key) in targets">
+        <target :open-target-balance="onOpenTargetBalanceDlg" :index="key" :name="target.name" :price="target.price" :balance="target.balance"></target>
       </el-col>
     </el-row>
     <update-target-balance-dlg :current-target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>
@@ -22,9 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Target from '../components/target/Target.vue';
-import CreateTargetDlg from '../components/target/CreateTargetDlg.vue';
-import UpdateTargetBalanceDlg from '../components/target/UpdateTargetBalanceDlg.vue';
+import { Target, CreateTargetDlg, UpdateTargetBalanceDlg } from '../components/target';
 
 import BudgetApi, { ITarget } from '../api';
 
@@ -51,8 +49,8 @@ export default Vue.extend({
     },
     onOpenTargetBalanceDlg(index: number) {
       this.currentTarget = {
-        index,
-        balance: this.targets[index].balance
+        ...this.targets[index],
+        index
       };
       this.isUpdateBalanceDlgOpen = true;
     },

@@ -1,9 +1,9 @@
 <template>
   <div>
     <h3>Budget Stats</h3>
-    <el-row  type="flex" align="center">
+    <el-row>
       <el-col :span="6" :offset="6">
-        <el-row>
+        <el-row type="flex" align="middle">
           <el-col :span="12">
             <p>Enter month income:</p>
           </el-col>
@@ -11,7 +11,7 @@
             <el-input-number v-model="income" :controls=false></el-input-number>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex" align="middle">
           <el-col :span="12">
             <p>Enter per month saving (%):</p>
           </el-col>
@@ -34,7 +34,7 @@
     </el-row>
     <el-row>
       <el-col :span="8" :offset="8">
-        <el-button round @click="save">Save</el-button>
+        <el-button type="primary" round @click="save">Save</el-button>
       </el-col>
     </el-row>
   </div>

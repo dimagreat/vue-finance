@@ -1,8 +1,9 @@
 <template>
-  <div class="target" @click="openTargetBalance(index)">
+  <div class="target">
     <div class="target-name">{{ name }}</div>
     <div class="target-progress">{{ balance }}/{{ price }}</div>
     <div class="target-complete" :style="{ width: complete + '%' }"></div>
+    <el-button type="success" @click="openTargetBalance(index)">Update balance</el-button>
   </div>
 </template>
 
@@ -34,14 +35,13 @@ export default Vue.extend({
     }
   },
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     complete(): number {
       return 100 / (this.price / this.balance);
     }
-  },
+  }
 });
 </script>
 
@@ -52,7 +52,6 @@ export default Vue.extend({
   padding: 10px;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
 }
 .target-name {
   font-style: italic;
@@ -62,7 +61,7 @@ export default Vue.extend({
   position: absolute;
   top: 0;
   left: 0;
-  background: #67c23a;
+  background: rgba(66, 244, 86, 0.2);
   height: 100%;
 }
 </style>
