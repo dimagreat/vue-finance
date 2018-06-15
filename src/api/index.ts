@@ -7,6 +7,7 @@ export interface ITarget {
   name: string;
   price: number;
   balance: number;
+  index?: number;
 }
 
 const BUDGET_SETTINGS = 'BUDGET_SETTINGS';

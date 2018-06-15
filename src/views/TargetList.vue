@@ -3,7 +3,7 @@
     <h2>Targets</h2>
     <el-row>
       <el-col :span="4" :offset="8">
-        <el-button type="primary" round @click="isCreateTargetDlgOpen = true">Add Target</el-button>
+        <el-button type="primary" round @click="openCreateTargetDlg">Add Target</el-button>
       </el-col>
       <el-col :span="4">
         <el-button type="primary" round @click="saveTargets">Save Targets</el-button>
@@ -12,29 +12,32 @@
     <el-row>
       <div v-if="targets.length === 0">There is no targets</div>
       <el-col :span="4" :offset="1" :key="key" v-for="(target, key) in targets">
-        <target :open-target-balance="onOpenTargetBalanceDlg" :index="key" :name="target.name" :price="target.price" :balance="target.balance"></target>
+        <target :open-edit-target="onOpenEditTargetDlg" :open-target-balance="onOpenTargetBalanceDlg" :index="key" :name="target.name" :price="target.price" :balance="target.balance"></target>
       </el-col>
     </el-row>
     <update-target-balance-dlg :current-target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>
-    <create-target-dlg :is-open="isCreateTargetDlgOpen" :on-add="createTarget" :on-close="closeCreateTargetDlg"></create-target-dlg>
+    <create-edit-target-dlg :is-edit="createEditTargetDlg.isEdit" :target="currentTarget" :is-open="createEditTargetDlg.isOpen" :on-add="createTarget" :on-edit="editTarget" :on-close="closeCreateTargetDlg"></create-edit-target-dlg>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Target, CreateTargetDlg, UpdateTargetBalanceDlg } from '../components/target';
+import { Target, CreateEditTargetDlg, UpdateTargetBalanceDlg } from '../components/target';
 
 import BudgetApi, { ITarget } from '../api';
 
 export default Vue.extend({
   name: 'TargetList',
-  components: { Target, CreateTargetDlg, UpdateTargetBalanceDlg },
+  components: { Target, CreateEditTargetDlg, UpdateTargetBalanceDlg },
   data() {
     return {
       targets: [] as ITarget[],
-      isCreateTargetDlgOpen: false,
+      createEditTargetDlg: {
+        isOpen: false,
+        isEdit: false
+      },
       isUpdateBalanceDlgOpen: false,
-      currentTarget: {}
+      currentTarget: {} as ITarget
     };
   },
   mounted() {
@@ -54,14 +57,40 @@ export default Vue.extend({
       };
       this.isUpdateBalanceDlgOpen = true;
     },
+    onOpenEditTargetDlg(index: number) {
+      this.currentTarget = {
+        ...this.targets[index],
+        index
+      };
+      this.createEditTargetDlg.isOpen = true;
+      this.createEditTargetDlg.isEdit = true;
+    },
+    openCreateTargetDlg() {
+      this.currentTarget = {
+        name: '',
+        balance: 0,
+        price: 0
+      };
+      this.createEditTargetDlg.isOpen = true;
+      this.createEditTargetDlg.isEdit = false;
+    },
     closeTargetBalanceDlg() {
       this.isUpdateBalanceDlgOpen = false;
     },
     closeCreateTargetDlg() {
-      this.isCreateTargetDlgOpen = false;
+      this.createEditTargetDlg.isOpen = false;
     },
     createTarget(target: ITarget) {
       this.targets.push(target);
+    },
+    editTarget(target: ITarget) {
+      if (!this.currentTarget) {
+        return;
+      }
+      this.targets[this.currentTarget.index!] = {
+        ...this.currentTarget,
+        ...target
+      };
     },
     saveTargets() {
       BudgetApi.setTargets(this.targets);

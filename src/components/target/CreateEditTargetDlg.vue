@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Create Target"
+    :title="isEdit ? 'Edit Target' : 'Create Target'"
     :visible="isOpen"
     width="30%">
     <el-row type="flex" align="middle">
@@ -8,7 +8,7 @@
         <p>Enter target name:</p>
       </el-col>
       <el-col :span="8">
-        <el-input v-model="name"></el-input>
+        <el-input v-model="target.name"></el-input>
       </el-col>
     </el-row>
     <el-row  type="flex" align="middle">
@@ -16,13 +16,13 @@
         <p>Enter target price:</p>
       </el-col>
       <el-col :span="8">
-        <el-input-number v-model="price" :controls=false :min=0></el-input-number>
+        <el-input-number v-model="target.price" :controls=false :min=0></el-input-number>
       </el-col>
     </el-row>
     <span slot="footer" class="dialog-footer">
       <el-button @click="onClose">Cancel</el-button>
-      <el-button type="primary" @click="onAddTarget">Create</el-button>
-    </span>
+      <el-button type="primary" @click="onAddTarget">{{ isEdit ? "Edit" : "Create" }}</el-button>
+    </span> 
   </el-dialog>
 </template>
 
@@ -30,7 +30,7 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  name: 'CreateTargetDlg',
+  name: 'CreateEditTargetDlg',
   props: {
     isOpen: {
       type: Boolean,
@@ -40,24 +40,30 @@ export default Vue.extend({
       type: Function,
       required: true
     },
+    onEdit: {
+      type: Function,
+      required: true
+    },
     onClose: {
       type: Function,
       required: true
+    },
+    target: {
+      type: Object,
+      required: true
+    },
+    isEdit: {
+      type: Boolean,
+      required: true
     }
-  },
-  data() {
-    return {
-      name: '',
-      price: 0
-    };
   },
   methods: {
     onAddTarget() {
-      this.onAdd({
-        name: this.name,
-        price: this.price,
-        balance: 0
-      });
+      if (this.isEdit) {
+        this.onEdit(this.target);
+      } else {
+        this.onAdd(this.target);
+      }
       this.onClose();
     }
   }

@@ -3,6 +3,7 @@
     <div class="target-name">{{ name }}</div>
     <div class="target-progress">{{ balance }}/{{ price }}</div>
     <div class="target-complete" :style="{ width: complete + '%' }"></div>
+    <el-button class="target-settings" icon="el-icon-setting" circle @click="openEditTarget(index)"></el-button>
     <el-button type="success" @click="openTargetBalance(index)">Update balance</el-button>
   </div>
 </template>
@@ -32,6 +33,10 @@ export default Vue.extend({
     openTargetBalance: {
       type: Function,
       required: true
+    },
+    openEditTarget: {
+      type: Function,
+      required: true
     }
   },
   data() {
@@ -56,6 +61,11 @@ export default Vue.extend({
 .target-name {
   font-style: italic;
   margin-bottom: 5px;
+}
+.target-settings {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 .target-complete {
   position: absolute;
