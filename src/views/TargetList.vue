@@ -10,9 +10,8 @@
       </el-col>
     </el-row>
     <el-row>
-      <div v-if="targets.length === 0">There is no targets</div>
-      <el-col :span="4" :offset="1" :key="key" v-for="(target, key) in targets">
-        <target :open-edit-target="onOpenEditTargetDlg" :open-target-balance="onOpenTargetBalanceDlg" :index="key" :name="target.name" :price="target.price" :balance="target.balance"></target>
+      <el-col :span="16" :offset="6">
+        <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :targets="targets"></target-table>
       </el-col>
     </el-row>
     <update-target-balance-dlg :current-target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>
@@ -22,13 +21,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Target, CreateEditTargetDlg, UpdateTargetBalanceDlg } from '../components/target';
+import { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg } from '../components/target';
 
 import BudgetApi, { ITarget } from '../api';
 
 export default Vue.extend({
   name: 'TargetList',
-  components: { Target, CreateEditTargetDlg, UpdateTargetBalanceDlg },
+  components: { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg },
   data() {
     return {
       targets: [] as ITarget[],
