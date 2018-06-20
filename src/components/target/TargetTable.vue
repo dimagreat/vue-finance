@@ -1,7 +1,8 @@
 <template>
   <el-table
     :data="targets"
-    :empty-text="'There is no targets'"
+    :empty-text="tableOptions.emptyMessage"
+    :align="tableOptions.align"
     style="width: 80%">
     <el-table-column
       label="Name"
@@ -22,6 +23,12 @@
       width="180">
       <template slot-scope="scope">
         <span>{{ scope.row.price }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="Progress">
+      <template slot-scope="scope">
+        <el-progress :show-text="false" :text-inside="true" :stroke-width="15" status="success" :percentage="Math.round(100 / (scope.row.price / scope.row.balance))"></el-progress>
       </template>
     </el-table-column>
     <el-table-column
@@ -57,6 +64,14 @@ export default Vue.extend({
       type: Array,
       required: true
     }
+  },
+  data() {
+    return {
+      tableOptions: {
+        align: 'left',
+        emptyMessage: 'There is no targets...'
+      }
+    };
   }
 });
 </script>

@@ -10,7 +10,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="16" :offset="6">
+      <el-col :span="16" :offset="5">
         <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :targets="targets"></target-table>
       </el-col>
     </el-row>
@@ -86,10 +86,11 @@ export default Vue.extend({
       if (!this.currentTarget) {
         return;
       }
-      this.targets[this.currentTarget.index!] = {
+      const newItem = {
         ...this.currentTarget,
         ...target
       };
+      Vue.set(this.targets, this.currentTarget.index!, newItem);
     },
     saveTargets() {
       BudgetApi.setTargets(this.targets);
