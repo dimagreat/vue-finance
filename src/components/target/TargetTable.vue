@@ -2,8 +2,7 @@
   <el-table
     :data="targets"
     :empty-text="tableOptions.emptyMessage"
-    :align="tableOptions.align"
-    style="width: 80%">
+    :align="tableOptions.align">
     <el-table-column
       label="Name"
       width="180">

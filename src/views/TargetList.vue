@@ -1,17 +1,16 @@
 <template>
   <div>
-    <h2>Targets</h2>
+    <el-row>
+      <el-col :span="16" :offset="5">
+        <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :targets="targets"></target-table>
+      </el-col>
+    </el-row>
     <el-row>
       <el-col :span="4" :offset="8">
         <el-button type="primary" round @click="openCreateTargetDlg">Add Target</el-button>
       </el-col>
       <el-col :span="4">
         <el-button type="primary" round @click="saveTargets">Save Targets</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="16" :offset="5">
-        <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :targets="targets"></target-table>
       </el-col>
     </el-row>
     <update-target-balance-dlg :current-target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>

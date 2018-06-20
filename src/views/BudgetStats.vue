@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3>Budget Stats</h3>
     <el-row>
       <el-col :span="6" :offset="6">
         <el-row type="flex" align="middle">
@@ -79,11 +78,9 @@ export default Vue.extend({
   }
 });
 </script>
+
 <style>
 .el-row {
   margin-bottom: 30px;
-}
-.el-row:last-child {
-  margin-bottom: 0;
 }
 </style>
