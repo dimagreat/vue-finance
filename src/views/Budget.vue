@@ -5,6 +5,9 @@
       <el-tab-pane label="Target List">    
         <target-list></target-list>
       </el-tab-pane>
+      <el-tab-pane label="Completed Targets">
+        <target-list-completed></target-list-completed>
+      </el-tab-pane>
       <el-tab-pane label="Budget Stats">
         <budget-stats></budget-stats>
       </el-tab-pane>
@@ -16,9 +19,10 @@
 import Vue from 'vue';
 import BudgetStats from './BudgetStats.vue';
 import TargetList from './TargetList.vue';
+import TargetListCompleted from './TargetListCompleted.vue';
 
 export default Vue.extend({
-  components: { BudgetStats, TargetList }
+  components: { BudgetStats, TargetList, TargetListCompleted }
 });
 </script>
 

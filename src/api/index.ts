@@ -12,6 +12,7 @@ export interface ITarget {
 
 const BUDGET_SETTINGS = 'BUDGET_SETTINGS';
 const TARGETS = 'TARGETS';
+const COMPLETED_TARGETS = 'COMPLETED_TARGETS';
 
 class BudgetApi {
   private storage = window.localStorage;
@@ -22,6 +23,10 @@ class BudgetApi {
 
   public setBudgetSettings(budget: IBudgetSettings) {
     this.setData(BUDGET_SETTINGS, budget);
+  }
+
+  public getCompletedTargets() {
+    return this.getData(COMPLETED_TARGETS);
   }
 
   public getTargets() {
