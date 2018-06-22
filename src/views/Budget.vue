@@ -3,10 +3,10 @@
     <h1>Budget!</h1>
     <el-tabs type="border-card">
       <el-tab-pane label="Target List">    
-        <target-list></target-list>
+        <target-list :on-complete="getCompleteTargets"></target-list>
       </el-tab-pane>
       <el-tab-pane label="Completed Targets">
-        <target-list-completed></target-list-completed>
+        <target-list-completed :targets="completedTargets"></target-list-completed>
       </el-tab-pane>
       <el-tab-pane label="Budget Stats">
         <budget-stats></budget-stats>
@@ -20,9 +20,26 @@ import Vue from 'vue';
 import BudgetStats from './BudgetStats.vue';
 import TargetList from './TargetList.vue';
 import TargetListCompleted from './TargetListCompleted.vue';
+import BudgetApi, { ITarget } from '../api';
 
 export default Vue.extend({
-  components: { BudgetStats, TargetList, TargetListCompleted }
+  components: { BudgetStats, TargetList, TargetListCompleted },
+  data() {
+    return {
+      completedTargets: [] as ITarget[]
+    };
+  },
+  mounted() {
+    this.getCompleteTargets();
+  },
+  methods: {
+    getCompleteTargets() {
+      const data = BudgetApi.getCompletedTargets();
+      if (data) {
+        this.completedTargets = data;
+      }
+    }
+  }
 });
 </script>
 

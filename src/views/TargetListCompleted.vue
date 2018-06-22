@@ -12,20 +12,12 @@
 import Vue from 'vue';
 import { TargetTableCompleted } from '../components/target';
 
-import BudgetApi, { ITarget } from '../api';
-
 export default Vue.extend({
   name: 'TargetListCompleted',
   components: { TargetTableCompleted },
-  data() {
-    return {
-      targets: [] as ITarget[]
-    };
-  },
-  mounted() {
-    const data = BudgetApi.getCompletedTargets();
-    if (data) {
-      this.targets = data;
+  props: {
+    targets: {
+      type: Array
     }
   }
 });
