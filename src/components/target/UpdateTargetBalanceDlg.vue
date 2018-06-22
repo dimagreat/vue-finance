@@ -53,7 +53,7 @@ export default Vue.extend({
   },
   methods: {
     onUpdateBalance() {
-      this.onUpdate(this.currentTarget.index, this.balance);
+      this.onUpdate(this.currentTarget.id, this.balance);
       this.onClose();
     }
   }

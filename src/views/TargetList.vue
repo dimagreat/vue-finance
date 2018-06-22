@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="16" :offset="5">
-        <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :targets="targets"></target-table>
+      <el-col :span="18" :offset="3">
+        <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :open-complete-dlg="onOpenCompleteDlg" :targets="targets"></target-table>
       </el-col>
     </el-row>
     <el-row>
@@ -13,6 +13,7 @@
         <el-button type="primary" round @click="saveTargets">Save Targets</el-button>
       </el-col>
     </el-row>
+    <yes-no-dlg :is-open="isCompleteDlgOpen" :options="completeDlgOptions" :on-ok="onCompleteTarget" :on-close="onCloseCompleteDlg"></yes-no-dlg>
     <update-target-balance-dlg :current-target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>
     <create-edit-target-dlg :is-edit="createEditTargetDlg.isEdit" :target="currentTarget" :is-open="createEditTargetDlg.isOpen" :on-add="createTarget" :on-edit="editTarget" :on-close="closeCreateTargetDlg"></create-edit-target-dlg>
   </div>
@@ -21,12 +22,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg } from '../components/target';
+import YesNoDlg from '../components/YesNoDlg.vue';
 
 import BudgetApi, { ITarget } from '../api';
 
 export default Vue.extend({
   name: 'TargetList',
-  components: { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg },
+  components: { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg, YesNoDlg },
   data() {
     return {
       targets: [] as ITarget[],
@@ -34,8 +36,13 @@ export default Vue.extend({
         isOpen: false,
         isEdit: false
       },
+      isCompleteDlgOpen: false,
       isUpdateBalanceDlgOpen: false,
-      currentTarget: {} as ITarget
+      currentTarget: {} as ITarget,
+      completeDlgOptions: {
+        title: 'Complete Modal',
+        bodyText: 'Do you want to move target to "Completed"?'
+      }
     };
   },
   mounted() {
@@ -45,21 +52,17 @@ export default Vue.extend({
     }
   },
   methods: {
-    updateBalance(index: number, value: number) {
+    updateBalance(id: string, value: number) {
+      const index = this.targets.findIndex(el => el.id === id);
       this.targets[index].balance = value;
     },
-    onOpenTargetBalanceDlg(index: number) {
-      this.currentTarget = {
-        ...this.targets[index],
-        index
-      };
+    onOpenTargetBalanceDlg(id: string) {
+      this.currentTarget = this.targets.find(el => el.id === id)!;
       this.isUpdateBalanceDlgOpen = true;
     },
-    onOpenEditTargetDlg(index: number) {
-      this.currentTarget = {
-        ...this.targets[index],
-        index
-      };
+    onOpenEditTargetDlg(id: string) {
+      this.currentTarget = this.targets.find(el => el.id === id)!;
+
       this.createEditTargetDlg.isOpen = true;
       this.createEditTargetDlg.isEdit = true;
     },
@@ -67,10 +70,27 @@ export default Vue.extend({
       this.currentTarget = {
         name: '',
         balance: 0,
-        price: 0
+        price: 0,
+        id: ''
       };
       this.createEditTargetDlg.isOpen = true;
       this.createEditTargetDlg.isEdit = false;
+    },
+    onOpenCompleteDlg(id: string) {
+      this.currentTarget = this.targets.find(el => el.id === id)!;
+      this.isCompleteDlgOpen = true;
+    },
+    onCloseCompleteDlg() {
+      this.isCompleteDlgOpen = false;
+    },
+    onCompleteTarget() {
+      BudgetApi.completeTarget(this.currentTarget);
+      this.removeTarget(this.currentTarget.id);
+    },
+    removeTarget(id: string) {
+      const index = this.targets.findIndex(el => el.id === id);
+      this.targets.splice(index, 1);
+      this.saveTargets();
     },
     closeTargetBalanceDlg() {
       this.isUpdateBalanceDlgOpen = false;
@@ -89,7 +109,9 @@ export default Vue.extend({
         ...this.currentTarget,
         ...target
       };
-      Vue.set(this.targets, this.currentTarget.index!, newItem);
+      const index = this.targets.findIndex(el => el.id === newItem.id)!;
+
+      Vue.set(this.targets, index, newItem);
     },
     saveTargets() {
       BudgetApi.setTargets(this.targets);

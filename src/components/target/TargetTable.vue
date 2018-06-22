@@ -35,11 +35,16 @@
       <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="openBalanceDlg(scope.$index)">Update Balance</el-button>
+          @click="openBalanceDlg(scope.row.id)">Update Balance</el-button>
         <el-button
           size="mini"
           type="danger"
-          @click="openEditDlg(scope.$index)">Edit Target</el-button>
+          @click="openEditDlg(scope.row.id)">Edit Target</el-button>
+        <el-button
+          v-if="scope.row.balance === scope.row.price"
+          size="mini"
+          type="success"
+          @click="openCompleteDlg(scope.row.id)">Complete Target</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -52,6 +57,10 @@ export default Vue.extend({
   name: 'TargetTable',
   props: {
     openBalanceDlg: {
+      type: Function,
+      required: true
+    },
+    openCompleteDlg: {
       type: Function,
       required: true
     },

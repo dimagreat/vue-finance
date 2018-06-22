@@ -7,7 +7,7 @@ export interface ITarget {
   name: string;
   price: number;
   balance: number;
-  index?: number;
+  id: string;
 }
 
 const BUDGET_SETTINGS = 'BUDGET_SETTINGS';
@@ -27,6 +27,11 @@ class BudgetApi {
 
   public getCompletedTargets() {
     return this.getData(COMPLETED_TARGETS);
+  }
+
+  public completeTarget(target: ITarget) {
+    const targets = this.getCompletedTargets() || [];
+    this.setData(COMPLETED_TARGETS, [...targets, target]);
   }
 
   public getTargets() {

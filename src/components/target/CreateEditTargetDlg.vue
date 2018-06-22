@@ -62,9 +62,18 @@ export default Vue.extend({
       if (this.isEdit) {
         this.onEdit(this.target);
       } else {
+        this.target.id = this.createId();
         this.onAdd(this.target);
       }
       this.onClose();
+    },
+    createId() {
+      return (
+        '_' +
+        Math.random()
+          .toString(36)
+          .substr(2, 9)
+      );
     }
   }
 });
