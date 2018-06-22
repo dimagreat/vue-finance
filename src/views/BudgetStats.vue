@@ -7,7 +7,7 @@
             <p>Enter month income:</p>
           </el-col>
           <el-col :span="4">
-            <el-input-number v-model="income" :controls=false></el-input-number>
+            <el-input-number v-model="income" @change="onChangeIncome" :controls=false></el-input-number>
           </el-col>
         </el-row>
         <el-row type="flex" align="middle">
@@ -29,11 +29,6 @@
         <el-row :span="8">
           <label-value label="Per year savings" v-bind:value="totalSavings"></label-value>
         </el-row>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="8" :offset="8">
-        <el-button type="primary" round @click="save">Save</el-button>
       </el-col>
     </el-row>
   </div>
@@ -62,17 +57,25 @@ export default Vue.extend({
   },
   computed: {
     totalIncome(): number {
-      return this.income * 12;
+      return Math.round(this.income * 12);
     },
     monthSavings(): number {
-      return this.income * (this.savings / 100);
+      return Math.round(this.income * (this.savings / 100));
     },
     totalSavings(): number {
-      return this.totalIncome * (this.savings / 100);
+      return Math.round(this.totalIncome * (this.savings / 100));
     }
   },
   methods: {
-    save() {
+    onChangeIncome(value: number) {
+      this.income = value;
+      this.onSave();
+    },
+    onChangeSavings(value: number) {
+      this.savings = value;
+      this.onSave();
+    },
+    onSave() {
       BudgetApi.setBudgetSettings({ income: this.income, savings: this.savings });
     }
   }

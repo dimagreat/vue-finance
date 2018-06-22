@@ -1,16 +1,13 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="18" :offset="3">
-        <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :open-complete-dlg="onOpenCompleteDlg" :targets="targets"></target-table>
+      <el-col :span="8">
+        <el-button type="primary" round @click="openCreateTargetDlg">Add Target</el-button>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="4" :offset="8">
-        <el-button type="primary" round @click="openCreateTargetDlg">Add Target</el-button>
-      </el-col>
-      <el-col :span="4">
-        <el-button type="primary" round @click="saveTargets">Save Targets</el-button>
+      <el-col :span="18" :offset="3">
+        <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :open-complete-dlg="onOpenCompleteDlg" :targets="targets"></target-table>
       </el-col>
     </el-row>
     <yes-no-dlg :is-open="isCompleteDlgOpen" :options="completeDlgOptions" :on-ok="onCompleteTarget" :on-close="onCloseCompleteDlg"></yes-no-dlg>
@@ -55,6 +52,7 @@ export default Vue.extend({
     updateBalance(id: string, value: number) {
       const index = this.targets.findIndex(el => el.id === id);
       this.targets[index].balance = value;
+      this.saveTargets();
     },
     onOpenTargetBalanceDlg(id: string) {
       this.currentTarget = this.targets.find(el => el.id === id)!;
@@ -100,6 +98,7 @@ export default Vue.extend({
     },
     createTarget(target: ITarget) {
       this.targets.push(target);
+      this.saveTargets();
     },
     editTarget(target: ITarget) {
       if (!this.currentTarget) {
@@ -112,6 +111,7 @@ export default Vue.extend({
       const index = this.targets.findIndex(el => el.id === newItem.id)!;
 
       Vue.set(this.targets, index, newItem);
+      this.saveTargets();
     },
     saveTargets() {
       BudgetApi.setTargets(this.targets);
