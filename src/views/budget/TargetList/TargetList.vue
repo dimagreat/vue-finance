@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg } from '../components/target';
-import YesNoDlg from '../components/YesNoDlg.vue';
+import { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg } from './components';
+import YesNoDlg from '../../../components/YesNoDlg.vue';
 
 import BudgetApi, { ITarget } from '../api';
 
@@ -55,17 +55,16 @@ export default Vue.extend({
   },
   methods: {
     updateBalance(id: string, value: number) {
-      const index = this.targets.findIndex(el => el.id === id);
+      const index = this.targets.findIndex((el: ITarget) => el.id === id);
       this.targets[index].balance = value;
       this.saveTargets();
     },
     onOpenTargetBalanceDlg(id: string) {
-      this.currentTarget = this.targets.find(el => el.id === id)!;
+      const index = this.targets.findIndex((el: ITarget) => el.id === id);
       this.isUpdateBalanceDlgOpen = true;
     },
     onOpenEditTargetDlg(id: string) {
-      this.currentTarget = this.targets.find(el => el.id === id)!;
-
+      const index = this.targets.findIndex((el: ITarget) => el.id === id);
       this.createEditTargetDlg.isOpen = true;
       this.createEditTargetDlg.isEdit = true;
     },
@@ -80,7 +79,7 @@ export default Vue.extend({
       this.createEditTargetDlg.isEdit = false;
     },
     onOpenCompleteDlg(id: string) {
-      this.currentTarget = this.targets.find(el => el.id === id)!;
+      const index = this.targets.findIndex((el: ITarget) => el.id === id);
       this.isCompleteDlgOpen = true;
     },
     onCloseCompleteDlg() {
@@ -92,7 +91,7 @@ export default Vue.extend({
       this.onComplete();
     },
     removeTarget(id: string) {
-      const index = this.targets.findIndex(el => el.id === id);
+      const index = this.targets.findIndex((el: ITarget) => el.id === id);
       this.targets.splice(index, 1);
       this.saveTargets();
     },
@@ -114,7 +113,7 @@ export default Vue.extend({
         ...this.currentTarget,
         ...target
       };
-      const index = this.targets.findIndex(el => el.id === newItem.id)!;
+      const index = this.targets.findIndex((el: ITarget) => el.id === newItem.id);
 
       Vue.set(this.targets, index, newItem);
       this.saveTargets();

@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { TargetTableCompleted } from '../components/target';
+import TargetTableCompleted from './components/CompletedTargetsTable.vue';
 
 export default Vue.extend({
   name: 'TargetListCompleted',
