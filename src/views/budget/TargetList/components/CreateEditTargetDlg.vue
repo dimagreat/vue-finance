@@ -16,7 +16,7 @@
         <p>Enter target price:</p>
       </el-col>
       <el-col :span="8">
-        <el-input-number v-model="target.price" :controls=false :min=0></el-input-number>
+        <el-input-number v-model="target.price" :controls=false :min=0 :max="9999999999"></el-input-number>
       </el-col>
     </el-row>
     <span slot="footer" class="dialog-footer">

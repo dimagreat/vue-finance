@@ -13,7 +13,7 @@
     </el-row>
     <span slot="footer" class="dialog-footer">
       <el-button @click="onClose">Cancel</el-button>
-      <el-button type="primary" :disabled="balance > currentTarget.price" @click="onUpdateBalance">Save</el-button>
+      <el-button type="primary" :disabled="balance > target.price" @click="onUpdateBalance">Save</el-button>
     </span>
   </el-dialog>
 </template>
@@ -28,7 +28,7 @@ export default Vue.extend({
       type: Boolean,
       required: true
     },
-    currentTarget: {
+    target: {
       type: Object,
       required: true
     },
@@ -47,13 +47,13 @@ export default Vue.extend({
     };
   },
   watch: {
-    currentTarget() {
-      this.balance = this.currentTarget.balance;
+    target() {
+      this.balance = this.target.balance;
     }
   },
   methods: {
     onUpdateBalance() {
-      this.onUpdate(this.currentTarget.id, this.balance);
+      this.onUpdate(this.balance);
       this.onClose();
     }
   }

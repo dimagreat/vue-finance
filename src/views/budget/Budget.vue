@@ -5,9 +5,6 @@
       <el-tab-pane label="Target List">    
         <target-list :on-complete="getCompleteTargets"></target-list>
       </el-tab-pane>
-      <el-tab-pane label="Budget Plan">
-        <budget-plan></budget-plan>
-      </el-tab-pane>
       <el-tab-pane label="Budget Stats">
         <budget-stats></budget-stats>
       </el-tab-pane>
@@ -21,13 +18,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import BudgetStats from './BudgetStats/BudgetStats.vue';
-import BudgetPlan from './BudgetPlan/BudgetPlan.vue';
 import TargetList from './TargetList/TargetList.vue';
 import TargetListCompleted from './CompletedTargets/CompletedTargets.vue';
 import BudgetApi, { ITarget } from './api';
 
 export default Vue.extend({
-  components: { BudgetStats, TargetList, TargetListCompleted, BudgetPlan },
+  components: { BudgetStats, TargetList, TargetListCompleted },
   data() {
     return {
       completedTargets: [] as ITarget[]

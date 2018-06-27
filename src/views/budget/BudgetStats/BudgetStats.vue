@@ -27,7 +27,7 @@
           <label-value label="Per month savings" v-bind:value="monthSavings"></label-value>
         </el-row>
         <el-row :span="8">
-          <label-value label="Per year savings" v-bind:value="totalSavings"></label-value>
+          <label-value label="Per year savings" v-bind:value="yearSavings"></label-value>
         </el-row>
       </el-col>
     </el-row>
@@ -62,7 +62,7 @@ export default Vue.extend({
     monthSavings(): number {
       return Math.round(this.income * (this.savings / 100));
     },
-    totalSavings(): number {
+    yearSavings(): number {
       return Math.round(this.totalIncome * (this.savings / 100));
     }
   },

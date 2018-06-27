@@ -6,12 +6,12 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="18" :offset="3">
+      <el-col :span="14" :offset="5">
         <target-table :open-edit-dlg="onOpenEditTargetDlg" :open-balance-dlg="onOpenTargetBalanceDlg" :open-complete-dlg="onOpenCompleteDlg" :targets="targets"></target-table>
       </el-col>
     </el-row>
     <yes-no-dlg :is-open="isCompleteDlgOpen" :options="completeDlgOptions" :on-ok="onCompleteTarget" :on-close="onCloseCompleteDlg"></yes-no-dlg>
-    <update-target-balance-dlg :current-target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>
+    <update-target-balance-dlg :target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>
     <create-edit-target-dlg :is-edit="createEditTargetDlg.isEdit" :target="currentTarget" :is-open="createEditTargetDlg.isOpen" :on-add="createTarget" :on-edit="editTarget" :on-close="closeCreateTargetDlg"></create-edit-target-dlg>
   </div>
 </template>
@@ -54,13 +54,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    updateBalance(id: string, value: number) {
-      const index = this.targets.findIndex((el: ITarget) => el.id === id);
+    updateBalance(value: number) {
+      const index = this.targets.findIndex((el: ITarget) => el.id === this.currentTarget.id);
       this.targets[index].balance = value;
       this.saveTargets();
     },
     onOpenTargetBalanceDlg(id: string) {
       const index = this.targets.findIndex((el: ITarget) => el.id === id);
+      this.currentTarget = this.targets[index];
       this.isUpdateBalanceDlgOpen = true;
     },
     onOpenEditTargetDlg(id: string) {

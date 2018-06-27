@@ -5,23 +5,9 @@
     :align="tableOptions.align">
     <el-table-column
       label="Name"
-      width="180">
+      width="200">
       <template slot-scope="scope">
         <span>{{ scope.row.name }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="Balance"
-      width="180">
-      <template slot-scope="scope">
-        <span >{{ scope.row.balance }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="Price"
-      width="180">
-      <template slot-scope="scope">
-        <span>{{ scope.row.price }}</span>
       </template>
     </el-table-column>
     <el-table-column
@@ -31,20 +17,46 @@
       </template>
     </el-table-column>
     <el-table-column
+      label="Balance"
+      width="100">
+      <template slot-scope="scope">
+        <span >{{ scope.row.balance }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="Price"
+      width="100">
+      <template slot-scope="scope">
+        <span>{{ scope.row.price }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
       label="Actions">
       <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="openBalanceDlg(scope.row.id)">Update Balance</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="openEditDlg(scope.row.id)">Edit Target</el-button>
-        <el-button
-          v-if="scope.row.balance === scope.row.price"
-          size="mini"
-          type="success"
-          @click="openCompleteDlg(scope.row.id)">Complete Target</el-button>
+        <el-tooltip content="Update target balance" placement="top">
+          <el-button
+            round
+            icon="el-icon-plus"
+            @click="openBalanceDlg(scope.row.id)">
+          </el-button>
+        </el-tooltip>
+        <el-tooltip content="Edit target" placement="top">
+          <el-button
+            round
+            icon="el-icon-edit"
+            type="danger"
+            @click="openEditDlg(scope.row.id)">
+          </el-button>
+        </el-tooltip>
+        <el-tooltip content="Complete target" placement="top">
+          <el-button
+            :disabled="scope.row.balance !== scope.row.price"
+            icon="el-icon-success"
+            type="success"
+            @click="openCompleteDlg(scope.row.id)"
+            round>
+          </el-button>
+        </el-tooltip>
       </template>
     </el-table-column>
   </el-table>
