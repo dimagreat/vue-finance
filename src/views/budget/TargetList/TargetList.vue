@@ -26,11 +26,6 @@ import BudgetApi, { ITarget } from '../api';
 export default Vue.extend({
   name: 'TargetList',
   components: { TargetTable, CreateEditTargetDlg, UpdateTargetBalanceDlg, YesNoDlg },
-  props: {
-    onComplete: {
-      type: Function
-    }
-  },
   data() {
     return {
       targets: [] as ITarget[],
@@ -89,7 +84,6 @@ export default Vue.extend({
     onCompleteTarget() {
       BudgetApi.completeTarget(this.currentTarget);
       this.removeTarget(this.currentTarget.id);
-      this.onComplete();
     },
     removeTarget(id: string) {
       const index = this.targets.findIndex((el: ITarget) => el.id === id);

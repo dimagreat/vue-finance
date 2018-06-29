@@ -1,8 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
+    <layout/>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import Layout from './layout/Layout.vue';
+
+export default Vue.extend({
+  components: { Layout }
+});
+</script>
 
 <style>
 #app {
