@@ -12,7 +12,7 @@
       </el-col>
     </el-row>
     <yes-no-dlg :is-open="isCompleteDlgOpen" :options="completeDlgOptions" :on-ok="onCompleteTarget" :on-close="onCloseCompleteDlg"></yes-no-dlg>
-    <change-investment-dlg :is-open="isChangeInvestmentDlgOpen" :target="currentTarget" :on-update="updateInvestment" :on-close="onCloseChangeInvestmentDlg"></change-investment-dlg>
+    <change-investment-dlg :is-open="isChangeInvestmentDlgOpen" :target="currentTarget" :on-update="updateInvestment" :on-close="onCloseChangeInvestmentDlg" :invest-left="100 - totalInvest"></change-investment-dlg>
     <update-target-balance-dlg :target="currentTarget" :is-open="isUpdateBalanceDlgOpen" :on-close="closeTargetBalanceDlg" :on-update="updateBalance"></update-target-balance-dlg>
     <create-edit-target-dlg :is-edit="createEditTargetDlg.isEdit" :target="currentTarget" :is-open="createEditTargetDlg.isOpen" :on-add="createTarget" :on-edit="editTarget" :on-close="closeCreateTargetDlg"></create-edit-target-dlg>
   </div>
@@ -43,6 +43,7 @@ export default Vue.extend({
     return {
       targets: [] as ITarget[],
       earnPerMonth: 0,
+      totalInvest: 0,
       createEditTargetDlg: {
         isOpen: false,
         isEdit: false
@@ -65,6 +66,7 @@ export default Vue.extend({
     }
     if (targets) {
       this.targets = targets;
+      this.totalInvest = targets.reduce((acc: number, el: ITarget) => acc + el.invest, 0);
     }
   },
   methods: {

@@ -8,7 +8,7 @@
         <p>Enter investment (%):</p>
       </el-col>
       <el-col :span="8">
-        <el-input-number v-model="invest" :controls=false :min="0" :max="100"></el-input-number>
+        <el-input-number v-model="invest" :controls=false :min="0" :max="investLeft"></el-input-number>
       </el-col>
     </el-row>
     <span slot="footer" class="dialog-footer">
@@ -38,6 +38,10 @@ export default Vue.extend({
     },
     onClose: {
       type: Function,
+      required: true
+    },
+    investLeft: {
+      type: Number,
       required: true
     }
   },
