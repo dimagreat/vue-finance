@@ -8,6 +8,7 @@ export interface ITarget {
   price: number;
   balance: number;
   id: string;
+  invest: number;
 }
 
 const BUDGET_SETTINGS = 'BUDGET_SETTINGS';

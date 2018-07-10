@@ -17,6 +17,20 @@
       </template>
     </el-table-column>
     <el-table-column
+      label="Saving $ (%)"
+      width="200">
+      <template slot-scope="scope">
+       <span>{{ ( scope.row.invest / 100 ) * earnPerMonth }} ({{ scope.row.invest }})</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="Months left"
+      width="150">
+      <template slot-scope="scope">
+       <span>{{ Math.round((scope.row.price - scope.row.balance) / ((scope.row.invest/100) * earnPerMonth)) }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
       label="Balance"
       width="100">
       <template slot-scope="scope">
@@ -48,6 +62,14 @@
             @click="openEditDlg(scope.row.id)">
           </el-button>
         </el-tooltip>
+        <el-tooltip content="Update investment %" placement="top">
+          <el-button
+            icon="el-icon-star-on"
+            type="success"
+            @click="openInvestDlg(scope.row.id)"
+            round>
+          </el-button>
+        </el-tooltip>
         <el-tooltip content="Complete target" placement="top">
           <el-button
             :disabled="scope.row.balance !== scope.row.price"
@@ -76,6 +98,10 @@ export default Vue.extend({
       type: Function,
       required: true
     },
+    openInvestDlg: {
+      type: Function,
+      required: true
+    },
     openEditDlg: {
       type: Function,
       required: true
@@ -83,6 +109,10 @@ export default Vue.extend({
     targets: {
       type: Array,
       required: true
+    },
+    earnPerMonth: {
+      type: Number,
+      require: true
     }
   },
   data() {
