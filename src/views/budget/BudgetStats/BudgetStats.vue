@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Budget Stats</h1>
     <el-row>
       <el-col :span="6" :offset="6">
         <el-row type="flex" align="middle">
@@ -15,7 +16,7 @@
             <p>Enter per month saving (%):</p>
           </el-col>
           <el-col :span="4">
-            <el-input-number v-model="savings" :controls=false :max=100 :min=0></el-input-number>
+            <el-input-number v-model="savings" @change="onChangeSavings" :controls=false :max=100 :min=0></el-input-number>
           </el-col>
         </el-row>
       </el-col>

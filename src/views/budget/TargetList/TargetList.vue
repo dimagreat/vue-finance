@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Targets to Complete</h1>
     <el-row>
       <el-col :span="8">
         <el-button type="primary" round @click="openCreateTargetDlg">Add Target</el-button>

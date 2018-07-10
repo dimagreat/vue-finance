@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Completed Targets</h1>
     <el-row type="flex" justify="center">
       <el-col :span="5">
         <target-table-completed :targets="targets"></target-table-completed>

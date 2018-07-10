@@ -2,7 +2,6 @@
     <div>
         <navbar></navbar>
         <el-container direction="vertical">
-            <h1>Budget!</h1>
             <router-view></router-view>
         </el-container>
     </div>
